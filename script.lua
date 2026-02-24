@@ -1,24 +1,15 @@
 --[[
-    Y. GUS ULTIMATE HUB - V6 (SUPREME AI EDITION)
+    Y. GUS ULTIMATE HUB - V7 (HITBOX SUPREME EDITION)
     Design: Dark Acrylic / Neon Mint Gradient
-    Features: Cinematic Boot, Smart AI Chat, ESP, MM2, Optimization
+    Features: Cinematic Boot, Universal Hitbox, ESP, MM2, Optimization
     Compatible: Xeno & Premium Executors
 ]]
 
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
-local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
-
--- API GROQ CONFIGURAÇÃO
-local API_KEY = "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"
-local API_URL = "https://api.groq.com/openai/v1/chat/completions"
-
--- Captura a função de request do executor (Xeno, Fluxus, Delta, etc)
-local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
-local setclip = setclipboard or toclipboard or function() end
 
 -- PALETA DE CORES SUPREMA
 local Theme = {
@@ -27,9 +18,7 @@ local Theme = {
     Accent = Color3.fromRGB(0, 255, 170), -- Mint Super Neon
     Text = Color3.fromRGB(255, 255, 255),
     TextDark = Color3.fromRGB(130, 130, 140),
-    Card = Color3.fromRGB(20, 20, 24),
-    ChatUser = Color3.fromRGB(15, 35, 25),
-    ChatAI = Color3.fromRGB(22, 22, 28)
+    Card = Color3.fromRGB(20, 20, 24)
 }
 
 local function Tween(obj, info, goal)
@@ -37,7 +26,7 @@ local function Tween(obj, info, goal)
 end
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "YGus_V6_Supreme"
+ScreenGui.Name = "YGus_V7_Hitbox"
 ScreenGui.Parent = game.CoreGui
 ScreenGui.ResetOnSpawn = false
 
@@ -50,55 +39,35 @@ BootScreen.BackgroundColor3 = Color3.fromRGB(2, 2, 3)
 BootScreen.ZIndex = 1000
 
 local BootText = Instance.new("TextLabel", BootScreen)
-BootText.Size = UDim2.new(1, 0, 1, 0)
-BootText.BackgroundTransparency = 1
-BootText.TextColor3 = Theme.Accent
-BootText.Font = Enum.Font.Code
-BootText.TextSize = 18
-BootText.Text = ""
-BootText.TextXAlignment = Enum.TextXAlignment.Left
-BootText.TextYAlignment = Enum.TextYAlignment.Top
+BootText.Size = UDim2.new(1, 0, 1, 0); BootText.BackgroundTransparency = 1
+BootText.TextColor3 = Theme.Accent; BootText.Font = Enum.Font.Code; BootText.TextSize = 18
+BootText.Text = ""; BootText.TextXAlignment = "Left"; BootText.TextYAlignment = "Top"
 BootText.Position = UDim2.new(0, 20, 0, 20)
 
 local LogoMain = Instance.new("TextLabel", BootScreen)
-LogoMain.Size = UDim2.new(1, 0, 1, 0)
-LogoMain.BackgroundTransparency = 1
-LogoMain.Text = "Y. GUS"
-LogoMain.TextColor3 = Theme.Text
-LogoMain.Font = Enum.Font.GothamBlack
-LogoMain.TextSize = 0 -- Começa invisivel
-LogoMain.TextTransparency = 1
+LogoMain.Size = UDim2.new(1, 0, 1, 0); LogoMain.BackgroundTransparency = 1
+LogoMain.Text = "Y. GUS"; LogoMain.TextColor3 = Theme.Text
+LogoMain.Font = Enum.Font.GothamBlack; LogoMain.TextSize = 0; LogoMain.TextTransparency = 1
 
 task.spawn(function()
     local lines = {
-        "> Iniciando Y. Gus Core v6.0...",
+        "> Iniciando Y. Gus Core v7.0...",
         "> Bypass do Anticheat... [OK]",
-        "> Conectando a Groq AI (LLaMA 3)... [OK]",
+        "> Injetando Modulo Universal de Hitbox...",
         "> Carregando Modulos de Interface...",
-        "> Injetando no Processo Roblox...",
         "> Bem-vindo de volta, " .. player.Name .. "."
     }
-    
     local currentText = ""
     for _, line in ipairs(lines) do
-        currentText = currentText .. line .. "\n"
-        BootText.Text = currentText
-        task.wait(math.random(2, 5) / 10) -- Efeito de digitação hacker
+        currentText = currentText .. line .. "\n"; BootText.Text = currentText
+        task.wait(math.random(2, 4) / 10)
     end
-    
-    task.wait(0.5)
-    Tween(BootText, {0.5}, {TextTransparency = 1})
-    task.wait(0.5)
-    
+    task.wait(0.5); Tween(BootText, {0.5}, {TextTransparency = 1}); task.wait(0.5)
     Tween(LogoMain, {1, Enum.EasingStyle.Elastic}, {TextSize = 80, TextTransparency = 0})
-    local uig = Instance.new("UIGradient", LogoMain)
-    uig.Color = ColorSequence.new(Theme.Accent, Color3.fromRGB(0, 150, 255))
-    
+    local uig = Instance.new("UIGradient", LogoMain); uig.Color = ColorSequence.new(Theme.Accent, Color3.fromRGB(0, 150, 255))
     task.wait(1.5)
-    Tween(BootScreen, {1, Enum.EasingStyle.Quart}, {BackgroundTransparency = 1})
-    Tween(LogoMain, {1}, {TextTransparency = 1})
-    task.wait(1)
-    BootScreen:Destroy()
+    Tween(BootScreen, {1, Enum.EasingStyle.Quart}, {BackgroundTransparency = 1}); Tween(LogoMain, {1}, {TextTransparency = 1})
+    task.wait(1); BootScreen:Destroy()
 end)
 
 -- ==========================================
@@ -106,34 +75,28 @@ end)
 -- ==========================================
 local function Notify(title, text)
     local nFrame = Instance.new("Frame", ScreenGui)
-    nFrame.Size = UDim2.new(0, 250, 0, 60); nFrame.Position = UDim2.new(1, 10, 0.9, 0)
-    nFrame.BackgroundColor3 = Theme.Main
+    nFrame.Size = UDim2.new(0, 250, 0, 60); nFrame.Position = UDim2.new(1, 10, 0.9, 0); nFrame.BackgroundColor3 = Theme.Main
     Instance.new("UICorner", nFrame).CornerRadius = UDim.new(0, 8)
     local s = Instance.new("UIStroke", nFrame); s.Color = Theme.Accent; s.Thickness = 1.2
 
     local tl = Instance.new("TextLabel", nFrame)
     tl.Size = UDim2.new(1, -10, 0, 25); tl.Position = UDim2.new(0, 10, 0, 5)
     tl.Text = title; tl.TextColor3 = Theme.Accent; tl.Font = "GothamBold"; tl.TextXAlignment = "Left"; tl.BackgroundTransparency = 1
-    
     local ml = Instance.new("TextLabel", nFrame)
     ml.Size = UDim2.new(1, -10, 0, 25); ml.Position = UDim2.new(0, 10, 0, 25)
     ml.Text = text; ml.TextColor3 = Theme.Text; ml.Font = "Gotham"; ml.TextXAlignment = "Left"; ml.BackgroundTransparency = 1; ml.TextSize = 12
 
     nFrame:TweenPosition(UDim2.new(1, -260, 0.9, 0), "Out", "Back", 0.5)
-    task.delay(3, function()
-        nFrame:TweenPosition(UDim2.new(1, 10, 0.9, 0), "In", "Sine", 0.5)
-        task.wait(0.5); nFrame:Destroy()
-    end)
+    task.delay(3, function() nFrame:TweenPosition(UDim2.new(1, 10, 0.9, 0), "In", "Sine", 0.5); task.wait(0.5); nFrame:Destroy() end)
 end
 
 -- ==========================================
--- === MENU PRINCIPAL E BOTÃO ===============
+-- === MENU PRINCIPAL =======================
 -- ==========================================
 local ToggleBtn = Instance.new("TextButton", ScreenGui)
 ToggleBtn.Size = UDim2.new(0, 60, 0, 60); ToggleBtn.Position = UDim2.new(0.02, 0, 0.4, 0)
 ToggleBtn.BackgroundColor3 = Theme.Main; ToggleBtn.Text = "YG"
-ToggleBtn.Font = "GothamBlack"; ToggleBtn.TextSize = 20; ToggleBtn.TextColor3 = Theme.Accent
-ToggleBtn.Visible = false
+ToggleBtn.Font = "GothamBlack"; ToggleBtn.TextSize = 20; ToggleBtn.TextColor3 = Theme.Accent; ToggleBtn.Visible = false
 Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(1, 0)
 Instance.new("UIStroke", ToggleBtn).Thickness = 2; Instance.new("UIStroke", ToggleBtn).Color = Theme.Accent
 
@@ -155,8 +118,7 @@ Sidebar.Size = UDim2.new(0, 180, 1, -60); Sidebar.Position = UDim2.new(0, 10, 0,
 Instance.new("UICorner", Sidebar).CornerRadius = UDim.new(0, 10)
 local TabContainer = Instance.new("Frame", Sidebar)
 TabContainer.Size = UDim2.new(1, 0, 1, -20); TabContainer.Position = UDim2.new(0, 0, 0, 10); TabContainer.BackgroundTransparency = 1
-Instance.new("UIListLayout", TabContainer).HorizontalAlignment = "Center"
-Instance.new("UIListLayout", TabContainer).Padding = UDim.new(0, 6)
+Instance.new("UIListLayout", TabContainer).HorizontalAlignment = "Center"; Instance.new("UIListLayout", TabContainer).Padding = UDim.new(0, 6)
 
 local Content = Instance.new("Frame", Main)
 Content.Size = UDim2.new(1, -210, 1, -70); Content.Position = UDim2.new(0, 200, 0, 60); Content.BackgroundTransparency = 1
@@ -172,7 +134,7 @@ end
 MakeDraggable(Main); MakeDraggable(ToggleBtn)
 
 -- ==========================================
--- === SISTEMA DE ABAS ======================
+-- === SISTEMA DE COMPONENTES UI ============
 -- ==========================================
 local Tabs = {}
 function CreateTab(name)
@@ -208,168 +170,143 @@ function AddCard(tab, title, desc, func)
 
     Card.MouseEnter:Connect(function() Tween(Card, {0.2}, {BackgroundColor3 = Color3.fromRGB(30, 30, 36)}); Tween(cStroke, {0.2}, {Transparency = 0}) end)
     Card.MouseLeave:Connect(function() Tween(Card, {0.2}, {BackgroundColor3 = Theme.Card}); Tween(cStroke, {0.2}, {Transparency = 0.8}) end)
-    Card.MouseButton1Click:Connect(function() Notify("Executado", title); func() end)
+    Card.MouseButton1Click:Connect(function() Notify("Y. Gus", title .. " Ativado!"); func() end)
+end
+
+function AddSlider(tab, title, min, max, default, callback)
+    local SliderFrame = Instance.new("Frame", tab)
+    SliderFrame.Size = UDim2.new(1, -10, 0, 60); SliderFrame.BackgroundColor3 = Theme.Card
+    Instance.new("UICorner", SliderFrame).CornerRadius = UDim.new(0, 8)
+    Instance.new("UIStroke", SliderFrame).Color = Theme.Accent; Instance.new("UIStroke", SliderFrame).Transparency = 0.8
+
+    local TitleL = Instance.new("TextLabel", SliderFrame)
+    TitleL.Size = UDim2.new(1, -30, 0, 30); TitleL.Position = UDim2.new(0, 15, 0, 5)
+    TitleL.Text = title .. ": " .. tostring(default); TitleL.TextColor3 = Theme.Text; TitleL.Font = "GothamBold"; TitleL.TextSize = 14; TitleL.BackgroundTransparency = 1; TitleL.TextXAlignment = "Left"
+
+    local Track = Instance.new("TextButton", SliderFrame)
+    Track.Size = UDim2.new(1, -30, 0, 8); Track.Position = UDim2.new(0, 15, 0, 40); Track.BackgroundColor3 = Theme.Main; Track.Text = ""; Track.AutoButtonColor = false
+    Instance.new("UICorner", Track).CornerRadius = UDim.new(1, 0)
+
+    local Fill = Instance.new("Frame", Track)
+    local startPos = (default - min) / (max - min)
+    Fill.Size = UDim2.new(startPos, 0, 1, 0); Fill.BackgroundColor3 = Theme.Accent
+    Instance.new("UICorner", Fill).CornerRadius = UDim.new(1, 0)
+
+    local dragging = false
+    local function UpdateSlider(input)
+        local pos = math.clamp((input.Position.X - Track.AbsolutePosition.X) / Track.AbsoluteSize.X, 0, 1)
+        local value = math.floor(min + ((max - min) * pos))
+        TitleL.Text = title .. ": " .. tostring(value)
+        Tween(Fill, {0.1}, {Size = UDim2.new(pos, 0, 1, 0)})
+        callback(value)
+    end
+
+    Track.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true; UpdateSlider(input)
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            UpdateSlider(input)
+        end
+    end)
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
 end
 
 -- ==========================================
--- === ABA DA IA (CHATBOT GROQ OTIMIZADO) ===
+-- === LÓGICA DE HITBOX UNIVERSAL ===========
 -- ==========================================
-local TabAI = CreateTab("AI Scripter")
-TabAI.ScrollingEnabled = false
-
-local ChatHistory = Instance.new("ScrollingFrame", TabAI)
-ChatHistory.Size = UDim2.new(1, -10, 1, -65); ChatHistory.BackgroundTransparency = 1
-ChatHistory.ScrollBarThickness = 2; ChatHistory.ScrollBarImageColor3 = Theme.Accent
-local ChatLayout = Instance.new("UIListLayout", ChatHistory)
-ChatLayout.Padding = UDim.new(0, 12); ChatLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
-ChatHistory.AutomaticCanvasSize = Enum.AutomaticSize.Y
-
-local InputFrame = Instance.new("Frame", TabAI)
-InputFrame.Size = UDim2.new(1, -10, 0, 45); InputFrame.Position = UDim2.new(0, 0, 1, -50)
-InputFrame.BackgroundColor3 = Theme.Card
-Instance.new("UICorner", InputFrame).CornerRadius = UDim.new(0, 8)
-Instance.new("UIStroke", InputFrame).Color = Theme.Accent
-
-local AIInput = Instance.new("TextBox", InputFrame)
-AIInput.Size = UDim2.new(1, -60, 1, 0); AIInput.Position = UDim2.new(0, 10, 0, 0)
-AIInput.BackgroundTransparency = 1; AIInput.Text = ""; AIInput.PlaceholderText = "Peça um script (Ex: Script de voar)..."
-AIInput.TextColor3 = Theme.Text; AIInput.Font = "Gotham"; AIInput.TextSize = 13; AIInput.TextXAlignment = "Left"; AIInput.ClearTextOnFocus = false
-
-local SendBtn = Instance.new("TextButton", InputFrame)
-SendBtn.Size = UDim2.new(0, 40, 0, 35); SendBtn.Position = UDim2.new(1, -45, 0, 5)
-SendBtn.BackgroundColor3 = Theme.Accent; SendBtn.Text = "➤"; SendBtn.TextColor3 = Theme.Main
-SendBtn.Font = "GothamBlack"; SendBtn.TextSize = 18
-Instance.new("UICorner", SendBtn).CornerRadius = UDim.new(0, 6)
-
-local ChatMemory = {
-    {role = "system", content = "Você é Y. Gus AI. Crie apenas scripts Luau curtos e funcionais para Roblox. Evite explicações longas, mande logo o código."}
+local HitboxConfig = {
+    Enabled = false,
+    Size = 10 -- Tamanho Padrão
 }
 
-local function AddChatBubble(text, isUser)
-    local BubbleBtn = Instance.new("TextButton", ChatHistory) -- Usando botão para permitir copiar
-    BubbleBtn.BackgroundColor3 = isUser and Theme.ChatUser or Theme.ChatAI
-    BubbleBtn.Text = ""
-    BubbleBtn.AutoButtonColor = false
-    Instance.new("UICorner", BubbleBtn).CornerRadius = UDim.new(0, 8)
-    
-    local txt = Instance.new("TextLabel", BubbleBtn)
-    txt.Text = (isUser and "Você: " or "Y. Gus: ") .. text
-    txt.Size = UDim2.new(1, -20, 0, 0) -- Altura gerada pelo AutomaticSize
-    txt.Position = UDim2.new(0, 10, 0, 10)
-    txt.TextColor3 = isUser and Theme.Accent or Theme.Text
-    txt.Font = "Gotham"
-    txt.TextSize = 13
-    txt.TextWrapped = true
-    txt.TextXAlignment = "Left"
-    txt.TextYAlignment = "Top"
-    txt.BackgroundTransparency = 1
-    txt.AutomaticSize = Enum.AutomaticSize.Y
-
-    BubbleBtn.AutomaticSize = Enum.AutomaticSize.Y
-    
-    -- Se for IA, permite clicar para copiar
-    if not isUser then
-        BubbleBtn.MouseButton1Click:Connect(function()
-            setclip(text)
-            Notify("Copiado!", "Resposta da IA copiada para a área de transferência.")
-        end)
-    end
-    
-    -- Forçar scroll para baixo
-    task.wait(0.1)
-    ChatHistory.CanvasPosition = Vector2.new(0, ChatHistory.AbsoluteWindowSize.Y + 9999)
-end
-
-local isGenerating = false
-SendBtn.MouseButton1Click:Connect(function()
-    local userText = AIInput.Text
-    if userText == "" or isGenerating then return end
-    
-    if not httprequest then
-        AddChatBubble("Erro: Seu executor (Xeno/etc) não suporta a função 'request'. A IA precisa de internet para funcionar.", false)
-        return
-    end
-
-    AIInput.Text = ""
-    isGenerating = true
-    SendBtn.Text = "..."
-    SendBtn.BackgroundColor3 = Theme.TextDark
-
-    AddChatBubble(userText, true)
-    table.insert(ChatMemory, {role = "user", content = userText})
-
-    task.spawn(function()
-        local bodyData = {
-            model = "llama3-8b-8192",
-            messages = ChatMemory,
-            temperature = 0.5
-        }
-
-        local success, response = pcall(function()
-            return httprequest({
-                Url = API_URL,
-                Method = "POST",
-                Headers = {
-                    ["Authorization"] = "Bearer " .. API_KEY,
-                    ["Content-Type"] = "application/json"
-                },
-                Body = HttpService:JSONEncode(bodyData)
-            })
-        end)
-
-        if success then
-            -- Tratando a resposta da API (que pode vir como StatusCode no lugar de Status)
-            local code = response.StatusCode or response.Status
-            if code == 200 then
-                local decoded = HttpService:JSONDecode(response.Body)
-                local aiReply = decoded.choices[1].message.content
-                table.insert(ChatMemory, {role = "assistant", content = aiReply})
-                AddChatBubble(aiReply .. "\n\n[CLIQUE NESTA MENSAGEM PARA COPIAR O SCRIPT]", false)
-            else
-                -- Mostra o erro exato que a API retornou
-                AddChatBubble("Erro na API (Codigo " .. tostring(code) .. "):\n" .. tostring(response.Body), false)
+RunService.Heartbeat:Connect(function()
+    if HitboxConfig.Enabled then
+        for _, v in pairs(Players:GetPlayers()) do
+            if v ~= player and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                local hrp = v.Character.HumanoidRootPart
+                -- Força a Hitbox o tempo todo pra burlar resets de outros jogos
+                hrp.Size = Vector3.new(HitboxConfig.Size, HitboxConfig.Size, HitboxConfig.Size)
+                hrp.Transparency = 0.6
+                hrp.BrickColor = BrickColor.new("Bright green") -- Verde Neon para destacar
+                hrp.Material = Enum.Material.Neon
+                hrp.CanCollide = false
             end
-        else
-            AddChatBubble("Falha fatal na requisição: O executor bloqueou a conexão ou você está sem internet.", false)
-            print(response) -- Loga o erro no console do executor
         end
-
-        isGenerating = false
-        SendBtn.Text = "➤"
-        SendBtn.BackgroundColor3 = Theme.Accent
-    end)
+    else
+        -- Reseta pro normal se tiver desligado
+        for _, v in pairs(Players:GetPlayers()) do
+            if v ~= player and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                local hrp = v.Character.HumanoidRootPart
+                if hrp.Size.X > 3 then -- Só reseta se tiver modificado
+                    hrp.Size = Vector3.new(2, 2, 1)
+                    hrp.Transparency = 1
+                    hrp.CanCollide = false
+                end
+            end
+        end
+    end
 end)
 
 -- ==========================================
--- === OUTRAS ABAS (Player, ESP, etc) =======
+-- === CONSTRUÇÃO DAS ABAS ==================
 -- ==========================================
 
+-- --- ABA JOGADOR ---
 local Tab1 = CreateTab("Jogador")
+
+-- Botão de Ativar Hitbox
+AddCard(Tab1, "Ativar/Desativar Hitbox", "Aumenta o tamanho dos inimigos", function()
+    HitboxConfig.Enabled = not HitboxConfig.Enabled
+    if HitboxConfig.Enabled then
+        Notify("Hitbox Expander", "Hitbox Universal Ativada!")
+    else
+        Notify("Hitbox Expander", "Hitbox Desativada e Resetada.")
+    end
+end)
+
+-- Slider para controlar o tamanho
+AddSlider(Tab1, "Tamanho da Hitbox", 2, 50, 10, function(valor)
+    HitboxConfig.Size = valor
+end)
+
 AddCard(Tab1, "Velocidade Extrema (WalkSpeed)", "Corre como o flash", function() player.Character.Humanoid.WalkSpeed = 100 end)
 AddCard(Tab1, "Pulo Extremo (JumpPower)", "Pula alturas absurdas", function() player.Character.Humanoid.JumpPower = 150 end)
 AddCard(Tab1, "Restaurar Personagem", "Volta ao estado normal", function() player.Character.Humanoid.WalkSpeed = 16; player.Character.Humanoid.JumpPower = 50 end)
 
+-- --- ABA VISUALS ---
 local TabVis = CreateTab("Visuals (ESP)")
 AddCard(TabVis, "Box ESP (Ver Através das Paredes)", "Cria caixas nos jogadores inimigos", function()
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
-            local box = Instance.new("BoxHandleAdornment")
-            box.Size = Vector3.new(4, 6, 1); box.AlwaysOnTop = true; box.ZIndex = 5; box.Transparency = 0.5; box.Color3 = Theme.Accent
-            box.Adornee = p.Character.HumanoidRootPart
-            box.Parent = p.Character.HumanoidRootPart
+            if not p.Character.HumanoidRootPart:FindFirstChild("ESP_BOX") then
+                local box = Instance.new("BoxHandleAdornment")
+                box.Name = "ESP_BOX"
+                box.Size = Vector3.new(4, 6, 1); box.AlwaysOnTop = true; box.ZIndex = 5; box.Transparency = 0.5; box.Color3 = Theme.Accent
+                box.Adornee = p.Character.HumanoidRootPart
+                box.Parent = p.Character.HumanoidRootPart
+            end
         end
     end
 end)
 
+-- --- ABA UNIVERSAL ---
 local Tab2 = CreateTab("Universal")
 AddCard(Tab2, "Infinite Yield Admin", "Comandos ilimitados", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-reupload-112882"))() end)
 AddCard(Tab2, "Animações Customizadas", "Pacote R15/R6", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-GAE-SIMPLIFIED-27193"))() end)
 AddCard(Tab2, "Menu de Emotes", "Dance a qualquer momento", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-emote-script-7yd7-63469"))() end)
 
+-- --- ABA MM2 ---
 local Tab3 = CreateTab("MM2")
 AddCard(Tab3, "Nexus Script", "Melhor script para Murder Mystery 2", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Murder-Mystery-2-nexus-updated-15270"))() end)
 
+-- --- ABA CONFIGURAÇÕES ---
 local Tab5 = CreateTab("Configs")
 AddCard(Tab5, "FPS Boost Master", "Deixa o jogo sem lag (Plastico puro)", function() 
     settings().Rendering.QualityLevel = 1
@@ -390,7 +327,7 @@ ToggleBtn.MouseButton1Click:Connect(function()
 end)
 
 -- Start Application
-task.wait(5.5) -- Espera acabar a animação de loading cinemática
+task.wait(4.5)
 ToggleBtn.Visible = true
-Tabs["AI Scripter"].Visible = true
-Notify("Y. Gus Hub", "Sistema inicializado. Bem-vindo!")
+Tabs["Jogador"].Visible = true
+Notify("Y. Gus Hub", "Carregamento Completo.")
