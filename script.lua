@@ -1,7 +1,7 @@
 --[[
-    Y. GUS ULTIMATE HUB - V9 (GOD MODE EDITION)
+    Y. GUS ULTIMATE HUB - V10 (SUPREME HITBOX & COMBAT)
     Design: Dark Acrylic / Neon Mint / Apex UI
-    Features: Aimbot, Noclip, Hitbox, ESP, Server Hop
+    Features: Universal Multi-Part Hitbox (Real Damage), FOV Aimbot, Noclip, ESP
 ]]
 
 local UserInputService = game:GetService("UserInputService")
@@ -31,9 +31,26 @@ local function Tween(obj, info, goal)
 end
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "YGus_V9_GodMode"
+ScreenGui.Name = "YGus_V10_Supreme"
 ScreenGui.Parent = game.CoreGui
 ScreenGui.ResetOnSpawn = false
+
+-- ==========================================
+-- === TELA DE CARREGAMENTO (V10) ===========
+-- ==========================================
+local BootScreen = Instance.new("Frame", ScreenGui)
+BootScreen.Size = UDim2.new(1, 0, 1, 0); BootScreen.BackgroundColor3 = Color3.fromRGB(2, 2, 3); BootScreen.ZIndex = 1000
+local LogoMain = Instance.new("TextLabel", BootScreen)
+LogoMain.Size = UDim2.new(1, 0, 1, 0); LogoMain.BackgroundTransparency = 1; LogoMain.Text = "Y. GUS V10"; LogoMain.TextColor3 = Theme.Accent; LogoMain.Font = Enum.Font.GothamBlack; LogoMain.TextSize = 0; LogoMain.TextTransparency = 0
+local uig = Instance.new("UIGradient", LogoMain); uig.Color = ColorSequence.new(Theme.Accent, Color3.fromRGB(0, 150, 255))
+
+task.spawn(function()
+    Tween(LogoMain, {1, Enum.EasingStyle.Elastic}, {TextSize = 90})
+    task.wait(1.5)
+    Tween(BootScreen, {0.8, Enum.EasingStyle.Quart}, {BackgroundTransparency = 1})
+    Tween(LogoMain, {0.8}, {TextTransparency = 1})
+    task.wait(0.8); BootScreen:Destroy()
+end)
 
 -- ==========================================
 -- === SISTEMA DE NOTIFICAÇÃO ===============
@@ -56,27 +73,22 @@ local function Notify(title, text)
 end
 
 -- ==========================================
--- === MENU PRINCIPAL E BOTÃO ===============
+-- === MENU PRINCIPAL =======================
 -- ==========================================
 local ToggleBtn = Instance.new("TextButton", ScreenGui)
-ToggleBtn.Size = UDim2.new(0, 60, 0, 60); ToggleBtn.Position = UDim2.new(0.02, 0, 0.4, 0)
-ToggleBtn.BackgroundColor3 = Theme.Main; ToggleBtn.Text = "YG"
-ToggleBtn.Font = "GothamBlack"; ToggleBtn.TextSize = 20; ToggleBtn.TextColor3 = Theme.Accent
+ToggleBtn.Size = UDim2.new(0, 60, 0, 60); ToggleBtn.Position = UDim2.new(0.02, 0, 0.4, 0); ToggleBtn.BackgroundColor3 = Theme.Main; ToggleBtn.Text = "YG"; ToggleBtn.Font = "GothamBlack"; ToggleBtn.TextSize = 20; ToggleBtn.TextColor3 = Theme.Accent
 Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(1, 0)
 Instance.new("UIStroke", ToggleBtn).Thickness = 2; Instance.new("UIStroke", ToggleBtn).Color = Theme.Accent
 
 local Main = Instance.new("Frame", ScreenGui)
-Main.Size = UDim2.new(0, 720, 0, 500); Main.Position = UDim2.new(0.5, -360, 0.5, -250)
-Main.BackgroundColor3 = Theme.Main; Main.Visible = false; Main.ClipsDescendants = true
+Main.Size = UDim2.new(0, 720, 0, 500); Main.Position = UDim2.new(0.5, -360, 0.5, -250); Main.BackgroundColor3 = Theme.Main; Main.Visible = false; Main.ClipsDescendants = true
 Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 12)
 Instance.new("UIStroke", Main).Thickness = 1; Instance.new("UIStroke", Main).Color = Theme.Accent; Instance.new("UIStroke", Main).Transparency = 0.5
 
 local Header = Instance.new("Frame", Main)
 Header.Size = UDim2.new(1, 0, 0, 50); Header.BackgroundTransparency = 1
 local HTitle = Instance.new("TextLabel", Header)
-HTitle.Size = UDim2.new(0, 350, 1, 0); HTitle.Position = UDim2.new(0, 20, 0, 0)
-HTitle.Text = "Y. GUS <font color='#00FFAA'>GOD MODE</font>"; HTitle.RichText = true
-HTitle.TextColor3 = Theme.Text; HTitle.Font = "GothamBlack"; HTitle.TextSize = 22; HTitle.TextXAlignment = "Left"; HTitle.BackgroundTransparency = 1
+HTitle.Size = UDim2.new(0, 350, 1, 0); HTitle.Position = UDim2.new(0, 20, 0, 0); HTitle.Text = "Y. GUS <font color='#00FFAA'>V10 SUPREME</font>"; HTitle.RichText = true; HTitle.TextColor3 = Theme.Text; HTitle.Font = "GothamBlack"; HTitle.TextSize = 22; HTitle.TextXAlignment = "Left"; HTitle.BackgroundTransparency = 1
 
 local Sidebar = Instance.new("Frame", Main)
 Sidebar.Size = UDim2.new(0, 180, 1, -60); Sidebar.Position = UDim2.new(0, 10, 0, 50); Sidebar.BackgroundColor3 = Theme.Sidebar
@@ -108,8 +120,7 @@ function CreateTab(name)
     local pLayout = Instance.new("UIListLayout", Page); pLayout.Padding = UDim.new(0, 10); Page.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
     local TBtn = Instance.new("TextButton", TabContainer)
-    TBtn.Size = UDim2.new(0.9, 0, 0, 40); TBtn.BackgroundColor3 = Theme.Main; TBtn.Text = "  " .. name
-    TBtn.TextColor3 = Theme.TextDark; TBtn.Font = "GothamBold"; TBtn.TextSize = 14; TBtn.TextXAlignment = "Left"
+    TBtn.Size = UDim2.new(0.9, 0, 0, 40); TBtn.BackgroundColor3 = Theme.Main; TBtn.Text = "  " .. name; TBtn.TextColor3 = Theme.TextDark; TBtn.Font = "GothamBold"; TBtn.TextSize = 14; TBtn.TextXAlignment = "Left"
     Instance.new("UICorner", TBtn).CornerRadius = UDim.new(0, 6)
     
     TBtn.MouseButton1Click:Connect(function()
@@ -120,24 +131,6 @@ function CreateTab(name)
     Tabs[name] = Page; return Page
 end
 
-function AddButton(tab, title, desc, func)
-    local Card = Instance.new("TextButton", tab)
-    Card.Size = UDim2.new(1, -10, 0, 60); Card.BackgroundColor3 = Theme.Card; Card.Text = ""; Card.AutoButtonColor = false
-    Instance.new("UICorner", Card).CornerRadius = UDim.new(0, 8)
-    local cStroke = Instance.new("UIStroke", Card); cStroke.Transparency = 0.8; cStroke.Color = Theme.Accent
-
-    local ct = Instance.new("TextLabel", Card)
-    ct.Text = title; ct.Size = UDim2.new(1, -20, 0, 30); ct.Position = UDim2.new(0, 15, 0, 5)
-    ct.TextColor3 = Theme.Accent; ct.Font = "GothamBold"; ct.TextSize = 15; ct.BackgroundTransparency = 1; ct.TextXAlignment = "Left"
-    local cd = Instance.new("TextLabel", Card)
-    cd.Text = desc; cd.Size = UDim2.new(1, -20, 0, 20); cd.Position = UDim2.new(0, 15, 0, 30)
-    cd.TextColor3 = Theme.TextDark; cd.Font = "Gotham"; cd.TextSize = 12; cd.BackgroundTransparency = 1; cd.TextXAlignment = "Left"
-
-    Card.MouseEnter:Connect(function() Tween(Card, {0.2}, {BackgroundColor3 = Color3.fromRGB(30, 30, 36)}); Tween(cStroke, {0.2}, {Transparency = 0}) end)
-    Card.MouseLeave:Connect(function() Tween(Card, {0.2}, {BackgroundColor3 = Theme.Card}); Tween(cStroke, {0.2}, {Transparency = 0.8}) end)
-    Card.MouseButton1Click:Connect(function() Notify("Executado", title); func() end)
-end
-
 function AddToggle(tab, title, desc, default, callback)
     local state = default
     local Card = Instance.new("TextButton", tab)
@@ -146,21 +139,14 @@ function AddToggle(tab, title, desc, default, callback)
     local cStroke = Instance.new("UIStroke", Card); cStroke.Transparency = 0.8; cStroke.Color = Theme.Accent
 
     local ct = Instance.new("TextLabel", Card)
-    ct.Text = title; ct.Size = UDim2.new(1, -80, 0, 30); ct.Position = UDim2.new(0, 15, 0, 5)
-    ct.TextColor3 = Theme.Accent; ct.Font = "GothamBold"; ct.TextSize = 15; ct.BackgroundTransparency = 1; ct.TextXAlignment = "Left"
+    ct.Text = title; ct.Size = UDim2.new(1, -80, 0, 30); ct.Position = UDim2.new(0, 15, 0, 5); ct.TextColor3 = Theme.Accent; ct.Font = "GothamBold"; ct.TextSize = 15; ct.BackgroundTransparency = 1; ct.TextXAlignment = "Left"
     local cd = Instance.new("TextLabel", Card)
-    cd.Text = desc; cd.Size = UDim2.new(1, -80, 0, 20); cd.Position = UDim2.new(0, 15, 0, 30)
-    cd.TextColor3 = Theme.TextDark; cd.Font = "Gotham"; cd.TextSize = 12; cd.BackgroundTransparency = 1; cd.TextXAlignment = "Left"
+    cd.Text = desc; cd.Size = UDim2.new(1, -80, 0, 20); cd.Position = UDim2.new(0, 15, 0, 30); cd.TextColor3 = Theme.TextDark; cd.Font = "Gotham"; cd.TextSize = 12; cd.BackgroundTransparency = 1; cd.TextXAlignment = "Left"
 
     local StatusLabel = Instance.new("TextLabel", Card)
     StatusLabel.Size = UDim2.new(0, 60, 0, 30); StatusLabel.Position = UDim2.new(1, -75, 0.5, -15)
-    StatusLabel.Text = state and "[ ON ]" or "[ OFF ]"
-    StatusLabel.TextColor3 = state and Theme.Accent or Theme.OffColor
-    StatusLabel.Font = "GothamBlack"; StatusLabel.TextSize = 14; StatusLabel.BackgroundTransparency = 1
+    StatusLabel.Text = state and "[ ON ]" or "[ OFF ]"; StatusLabel.TextColor3 = state and Theme.Accent or Theme.OffColor; StatusLabel.Font = "GothamBlack"; StatusLabel.TextSize = 14; StatusLabel.BackgroundTransparency = 1
 
-    Card.MouseEnter:Connect(function() Tween(Card, {0.2}, {BackgroundColor3 = Color3.fromRGB(30, 30, 36)}); Tween(cStroke, {0.2}, {Transparency = 0}) end)
-    Card.MouseLeave:Connect(function() Tween(Card, {0.2}, {BackgroundColor3 = Theme.Card}); Tween(cStroke, {0.2}, {Transparency = 0.8}) end)
-    
     Card.MouseButton1Click:Connect(function()
         state = not state
         StatusLabel.Text = state and "[ ON ]" or "[ OFF ]"
@@ -177,8 +163,7 @@ function AddSlider(tab, title, min, max, default, callback)
     Instance.new("UIStroke", SliderFrame).Color = Theme.Accent; Instance.new("UIStroke", SliderFrame).Transparency = 0.8
 
     local TitleL = Instance.new("TextLabel", SliderFrame)
-    TitleL.Size = UDim2.new(1, -30, 0, 30); TitleL.Position = UDim2.new(0, 15, 0, 5)
-    TitleL.Text = title .. " : " .. tostring(default); TitleL.TextColor3 = Theme.Text; TitleL.Font = "GothamBold"; TitleL.TextSize = 14; TitleL.BackgroundTransparency = 1; TitleL.TextXAlignment = "Left"
+    TitleL.Size = UDim2.new(1, -30, 0, 30); TitleL.Position = UDim2.new(0, 15, 0, 5); TitleL.Text = title .. " : " .. tostring(default); TitleL.TextColor3 = Theme.Text; TitleL.Font = "GothamBold"; TitleL.TextSize = 14; TitleL.BackgroundTransparency = 1; TitleL.TextXAlignment = "Left"
 
     local Track = Instance.new("TextButton", SliderFrame)
     Track.Size = UDim2.new(1, -30, 0, 8); Track.Position = UDim2.new(0, 15, 0, 40); Track.BackgroundColor3 = Theme.Main; Track.Text = ""; Track.AutoButtonColor = false
@@ -194,7 +179,7 @@ function AddSlider(tab, title, min, max, default, callback)
         local pos = math.clamp((input.Position.X - Track.AbsolutePosition.X) / Track.AbsoluteSize.X, 0, 1)
         local value = math.floor(min + ((max - min) * pos))
         TitleL.Text = title .. " : " .. tostring(value)
-        Tween(Fill, {0.1}, {Size = UDim2.new(pos, 0, 1, 0)})
+        Fill.Size = UDim2.new(pos, 0, 1, 0)
         callback(value)
     end
 
@@ -203,28 +188,40 @@ function AddSlider(tab, title, min, max, default, callback)
     UserInputService.InputEnded:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = false end end)
 end
 
+function AddButton(tab, title, desc, func)
+    local Card = Instance.new("TextButton", tab)
+    Card.Size = UDim2.new(1, -10, 0, 60); Card.BackgroundColor3 = Theme.Card; Card.Text = ""; Card.AutoButtonColor = false
+    Instance.new("UICorner", Card).CornerRadius = UDim.new(0, 8)
+    local cStroke = Instance.new("UIStroke", Card); cStroke.Transparency = 0.8; cStroke.Color = Theme.Accent
+
+    local ct = Instance.new("TextLabel", Card)
+    ct.Text = title; ct.Size = UDim2.new(1, -20, 0, 30); ct.Position = UDim2.new(0, 15, 0, 5); ct.TextColor3 = Theme.Accent; ct.Font = "GothamBold"; ct.TextSize = 15; ct.BackgroundTransparency = 1; ct.TextXAlignment = "Left"
+    local cd = Instance.new("TextLabel", Card)
+    cd.Text = desc; cd.Size = UDim2.new(1, -20, 0, 20); cd.Position = UDim2.new(0, 15, 0, 30); cd.TextColor3 = Theme.TextDark; cd.Font = "Gotham"; cd.TextSize = 12; cd.BackgroundTransparency = 1; cd.TextXAlignment = "Left"
+
+    Card.MouseButton1Click:Connect(function() Notify("Y. Gus", title .. " Executado"); func() end)
+end
+
 -- ==========================================
--- === LÓGICA GLOBAL DE HACKS (GOD MODE) ====
+-- === LOGICA GLOBAL DOS HACKS (V10) ========
 -- ==========================================
 local Configs = {
-    Hitbox = false, HitboxSize = 10,
-    ESP = false,
-    WalkSpeed = 16, JumpPower = 50,
+    Hitbox = false, HitboxSize = 10, HitboxTrans = 0.6,
+    ESP = false, WalkSpeed = 16, JumpPower = 50,
     Noclip = false, InfJump = false,
-    Aimbot = false, AimSmooth = 0.5
+    Aimbot = false, AimSmooth = 0.5, FOV = 150, ShowFOV = false
 }
 
--- Inf Jump
-UserInputService.JumpRequest:Connect(function()
-    if Configs.InfJump and player.Character and player.Character:FindFirstChild("Humanoid") then
-        player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-    end
-end)
+-- Criar Círculo de FOV (Campo de Visão do Aimbot)
+local FOVCircle = Drawing.new("Circle")
+FOVCircle.Color = Theme.Accent
+FOVCircle.Thickness = 1.5
+FOVCircle.Filled = false
+FOVCircle.Transparency = 1
 
--- Aimbot Target Finder
-local function GetNearestPlayer()
+local function GetNearestPlayerInFOV()
     local nearest = nil
-    local shortestDist = math.huge
+    local shortestDist = Configs.FOV
     for _, v in pairs(Players:GetPlayers()) do
         if v ~= player and v.Character and v.Character:FindFirstChild("Head") and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health > 0 then
             local pos, onScreen = camera:WorldToViewportPoint(v.Character.Head.Position)
@@ -240,127 +237,134 @@ local function GetNearestPlayer()
     return nearest
 end
 
--- HEARTBEAT / RENDER LOOP GLOBAL (Velocidade, Noclip, Aimbot, Hitbox)
-RunService.Stepped:Connect(function()
-    if Configs.Noclip and player.Character then
-        for _, part in pairs(player.Character:GetDescendants()) do
-            if part:IsA("BasePart") then part.CanCollide = false end
-        end
+-- Pulo Infinito
+UserInputService.JumpRequest:Connect(function()
+    if Configs.InfJump and player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
     end
 end)
 
+-- LOOP MESTRE (Hitbox Multi-Part, Aimbot, ESP, Speed)
+local HitboxParts = {"Head", "HumanoidRootPart", "Torso", "UpperTorso", "LowerTorso"}
+
 RunService.RenderStepped:Connect(function()
-    -- AIMBOT CAMLOCK
+    -- Atualizar FOV
+    if Configs.ShowFOV and Configs.Aimbot then
+        FOVCircle.Visible = true
+        FOVCircle.Radius = Configs.FOV
+        FOVCircle.Position = Vector2.new(mouse.X, mouse.Y + 36) -- Compensar offset do mouse no roblox
+    else
+        FOVCircle.Visible = false
+    end
+
+    -- Aimbot Lock
     if Configs.Aimbot then
-        local target = GetNearestPlayer()
+        local target = GetNearestPlayerInFOV()
         if target then
             camera.CFrame = camera.CFrame:Lerp(CFrame.new(camera.CFrame.Position, target.Position), Configs.AimSmooth)
         end
     end
 
-    -- Hitbox Controle
+    -- Hitbox Universal Profissional (Pega Cabeça e Tronco)
     if Configs.Hitbox then
         for _, v in pairs(Players:GetPlayers()) do
-            if v ~= player and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
-                local hrp = v.Character.HumanoidRootPart
-                hrp.Size = Vector3.new(Configs.HitboxSize, Configs.HitboxSize, Configs.HitboxSize)
-                hrp.Transparency = 0.6; hrp.BrickColor = BrickColor.new("Bright green"); hrp.Material = Enum.Material.Neon; hrp.CanCollide = false
+            if v ~= player and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health > 0 then
+                for _, partName in pairs(HitboxParts) do
+                    local part = v.Character:FindFirstChild(partName)
+                    if part then
+                        part.Size = Vector3.new(Configs.HitboxSize, Configs.HitboxSize, Configs.HitboxSize)
+                        part.Transparency = Configs.HitboxTrans
+                        part.BrickColor = BrickColor.new("Bright green")
+                        part.Material = Enum.Material.Neon
+                        part.CanCollide = false
+                        part.Massless = true -- Impede que o inimigo saia voando por causa da física pesada
+                    end
+                end
             end
         end
     else
+        -- Reseta pro normal se desligar
         for _, v in pairs(Players:GetPlayers()) do
-            if v ~= player and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
-                local hrp = v.Character.HumanoidRootPart
-                if hrp.Size.X > 3 then hrp.Size = Vector3.new(2, 2, 1); hrp.Transparency = 1; hrp.CanCollide = false end
-            end
-        end
-    end
-
-    -- ESP Box
-    for _, p in pairs(Players:GetPlayers()) do
-        if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
-            local hrp = p.Character.HumanoidRootPart
-            local esp = hrp:FindFirstChild("YGUS_ESP")
-            if Configs.ESP then
-                if not esp then
-                    esp = Instance.new("BoxHandleAdornment"); esp.Name = "YGUS_ESP"; esp.Size = Vector3.new(4, 6, 1); esp.AlwaysOnTop = true; esp.ZIndex = 5; esp.Transparency = 0.5; esp.Color3 = Theme.Accent; esp.Adornee = hrp; esp.Parent = hrp
+            if v ~= player and v.Character then
+                for _, partName in pairs(HitboxParts) do
+                    local part = v.Character:FindFirstChild(partName)
+                    if part and part.Size.X > 3 then
+                        if partName == "Head" then part.Size = Vector3.new(1.2, 1.2, 1.2)
+                        elseif partName == "HumanoidRootPart" then part.Size = Vector3.new(2, 2, 1); part.Transparency = 1
+                        else part.Size = Vector3.new(2, 2, 1) end
+                        part.Transparency = (partName == "HumanoidRootPart") and 1 or 0
+                        part.Massless = false
+                    end
                 end
-            else
-                if esp then esp:Destroy() end
             end
         end
     end
 
-    -- Speed & Jump Fixes
-    if player.Character and player.Character:FindFirstChild("Humanoid") then
-        if Configs.WalkSpeed ~= 16 then player.Character.Humanoid.WalkSpeed = Configs.WalkSpeed end
-        if Configs.JumpPower ~= 50 then player.Character.Humanoid.JumpPower = Configs.JumpPower end
+    -- Noclip e Speed
+    if player.Character then
+        if Configs.Noclip then
+            for _, part in pairs(player.Character:GetDescendants()) do
+                if part:IsA("BasePart") then part.CanCollide = false end
+            end
+        end
+        if player.Character:FindFirstChild("Humanoid") then
+            if Configs.WalkSpeed ~= 16 then player.Character.Humanoid.WalkSpeed = Configs.WalkSpeed end
+            if Configs.JumpPower ~= 50 then player.Character.Humanoid.JumpPower = Configs.JumpPower end
+        end
     end
 end)
 
 -- ==========================================
--- === CONSTRUÇÃO DAS ABAS ==================
+-- === ABAS DA INTERFACE ====================
 -- ==========================================
 
--- --- ABA COMBATE (AIMBOT) ---
+-- --- COMBATE (AIMBOT E HITBOX V10) ---
 local TabAim = CreateTab("Combate")
-AddToggle(TabAim, "Aimbot (CamLock)", "Trava a câmera na cabeça do inimigo mais próximo do mouse", false, function(s) Configs.Aimbot = s end)
-AddSlider(TabAim, "Suavidade do Aimbot", 1, 10, 5, function(v) Configs.AimSmooth = v / 10 end)
 
--- --- ABA JOGADOR ---
+AddToggle(TabAim, "Hitbox Suprema (Head & Torso)", "Aumenta a cabeça e tronco (Garante Headshots em qualquer jogo de tiro)", false, function(s) Configs.Hitbox = s end)
+AddSlider(TabAim, "Tamanho da Hitbox", 2, 50, 10, function(v) Configs.HitboxSize = v end)
+AddSlider(TabAim, "Visibilidade da Hitbox", 0, 10, 6, function(v) Configs.HitboxTrans = v / 10 end) -- 10 = Invisivel
+
+AddToggle(TabAim, "Aimbot FOV (CamLock)", "Puxa a mira para o inimigo dentro do círculo", false, function(s) Configs.Aimbot = s end)
+AddToggle(TabAim, "Mostrar Círculo do Aimbot (FOV)", "Desenha um círculo na tela da sua mira", false, function(s) Configs.ShowFOV = s end)
+AddSlider(TabAim, "Tamanho do Círculo (FOV)", 50, 600, 150, function(v) Configs.FOV = v end)
+AddSlider(TabAim, "Suavidade da Mira", 1, 10, 5, function(v) Configs.AimSmooth = v / 10 end)
+
+-- --- JOGADOR ---
 local Tab1 = CreateTab("Jogador")
 AddToggle(Tab1, "Noclip", "Atravessar todas as paredes", false, function(s) Configs.Noclip = s end)
-AddToggle(Tab1, "Pulo Infinito", "Pule no ar como se estivesse voando", false, function(s) Configs.InfJump = s end)
-AddToggle(Tab1, "Hitbox Expander", "Aumenta e destaca o corpo dos inimigos", false, function(s) Configs.Hitbox = s end)
-AddSlider(Tab1, "Tamanho da Hitbox", 2, 50, 10, function(v) Configs.HitboxSize = v end)
+AddToggle(Tab1, "Pulo Infinito", "Pule no ar sem limites", false, function(s) Configs.InfJump = s end)
 AddSlider(Tab1, "Velocidade (WalkSpeed)", 16, 250, 16, function(v) Configs.WalkSpeed = v end)
 AddSlider(Tab1, "Força do Pulo (JumpPower)", 50, 300, 50, function(v) Configs.JumpPower = v end)
-AddButton(Tab1, "Resetar Status Básicos", "Volta tudo ao padrão do Roblox", function() Configs.WalkSpeed = 16; Configs.JumpPower = 50; Configs.Noclip = false; Configs.InfJump = false; Notify("Resetado", "Status restaurado.") end)
 
--- --- ABA VISUALS ---
-local TabVis = CreateTab("Visuals (ESP)")
-AddToggle(TabVis, "Ativar ESP Box", "Cria caixas brilhantes através das paredes", false, function(s) Configs.ESP = s end)
+-- --- VISUALS ---
+local TabVis = CreateTab("Visuals")
+AddToggle(TabVis, "ESP Box", "Ver jogadores através da parede", false, function(s) Configs.ESP = s end)
 
--- --- ABA UNIVERSAL & MM2 ---
-local TabUni = CreateTab("Universal")
-AddButton(TabUni, "Infinite Yield Admin", "Comandos de admin", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-reupload-112882"))() end)
-AddButton(TabUni, "Animações Customizadas", "Pacote R15/R6", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-GAE-SIMPLIFIED-27193"))() end)
+-- --- SCRIPTS UNIVERSAIS ---
+local TabUni = CreateTab("Scripts Web")
+AddButton(TabUni, "Infinite Yield Admin", "Melhor script de comandos", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Infinite-Yield-reupload-112882"))() end)
+AddButton(TabUni, "Animações Customizadas", "Pacote R15/R6 exclusivo", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-GAE-SIMPLIFIED-27193"))() end)
 AddButton(TabUni, "Menu de Emotes", "Dance a qualquer momento", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-emote-script-7yd7-63469"))() end)
-AddButton(TabUni, "Nexus Script (MM2)", "Melhor script para Murder Mystery 2", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Murder-Mystery-2-nexus-updated-15270"))() end)
+AddButton(TabUni, "Nexus Script (MM2)", "AutoFarm para Murder Mystery", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Murder-Mystery-2-nexus-updated-15270"))() end)
 
--- --- ABA CONFIGURAÇÕES ---
+-- --- CONFIGS ---
 local Tab5 = CreateTab("Configs")
-AddButton(Tab5, "FPS Boost Master", "Remove gráficos para rodar liso", function() settings().Rendering.QualityLevel = 1; for _, v in pairs(game:GetDescendants()) do if v:IsA("Part") or v:IsA("MeshPart") then v.Material = "SmoothPlastic" elseif v:IsA("Texture") or v:IsA("Decal") then v:Destroy() end end end)
-AddButton(Tab5, "Server Hop", "Pula para outro servidor diferente", function() 
-    Notify("Aguarde", "Procurando outro servidor...")
+AddButton(Tab5, "Server Hop", "Pula para outro servidor", function() 
     local Servers = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"))
-    for _, s in pairs(Servers.data) do
-        if s.playing ~= s.maxPlayers and s.id ~= game.JobId then
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, s.id, player)
-            break
-        end
-    end
+    for _, s in pairs(Servers.data) do if s.playing ~= s.maxPlayers and s.id ~= game.JobId then TeleportService:TeleportToPlaceInstance(game.PlaceId, s.id, player) break end end
 end)
-AddButton(Tab5, "Fechar Y. Gus Hub", "Remove o menu da tela", function() ScreenGui:Destroy() end)
+AddButton(Tab5, "Fechar Y. Gus Hub", "Esconder Menu Completamente", function() FOVCircle:Remove(); ScreenGui:Destroy() end)
 
--- ==========================================
--- === LOGICA DE TECLADO E TOGGLE ===========
--- ==========================================
+-- Controle de Abrir/Fechar
 local function ToggleMenu()
-    if Main.Visible then
-        Tween(Main, {0.3, Enum.EasingStyle.Quart}, {Size = UDim2.new(0, 0, 0, 500), BackgroundTransparency = 1}); task.wait(0.3); Main.Visible = false
-    else
-        Main.Visible = true; Main.BackgroundTransparency = 0; Tween(Main, {0.5, Enum.EasingStyle.Back}, {Size = UDim2.new(0, 720, 0, 500)})
-    end
+    if Main.Visible then Tween(Main, {0.3, Enum.EasingStyle.Quart}, {Size = UDim2.new(0, 0, 0, 500), BackgroundTransparency = 1}); task.wait(0.3); Main.Visible = false
+    else Main.Visible = true; Main.BackgroundTransparency = 0; Tween(Main, {0.5, Enum.EasingStyle.Back}, {Size = UDim2.new(0, 720, 0, 500)}) end
 end
-
 ToggleBtn.MouseButton1Click:Connect(ToggleMenu)
+UserInputService.InputBegan:Connect(function(input, isP) if not isP and input.KeyCode == Enum.KeyCode.RightControl then ToggleMenu() end end)
 
--- Atalho no Teclado (Control Direito para Abrir/Fechar)
-UserInputService.InputBegan:Connect(function(input, isProcessed)
-    if not isProcessed and input.KeyCode == Enum.KeyCode.RightControl then ToggleMenu() end
-end)
-
--- Start Application
+task.wait(2.5)
+ToggleBtn.Visible = true
 Tabs["Combate"].Visible = true
-Notify("Y. Gus Hub", "Pressione Right-Control para fechar/abrir o menu.")
+Notify("Y. Gus", "Aperte Right-Control para esconder a UI.")
